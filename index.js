@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 var geoip = require("geoip-lite");
+const IP = require("ip");
 
 require("dotenv").config();
 
@@ -13,7 +14,7 @@ app.set("trust proxy", true);
 
 // Set up routes
 app.get("/weather/", (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ip = IP.address();
   var geo = geoip.lookup(ip);
   const city = geo.city;
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
